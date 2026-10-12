@@ -1,0 +1,868 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jorge Luis Borges - El Arquitecto de los Laberintos</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Cormorant Garamond, Alegreya & Playfair Display -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Alegreya+Sans:ital,wght@0,300;0,400;0,500;0,700;1,400&family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400;1,700&display=swap" rel="stylesheet">
+    <!-- FontAwesome icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        parchment: {
+                            50: '#fdfbf7',
+                            100: '#f7f2e7',
+                            200: '#ede3ce',
+                            300: '#dfcfab',
+                            400: '#cfb784',
+                        },
+                        sepia: {
+                            800: '#3c2a21',
+                            900: '#231710',
+                            950: '#140c08',
+                        },
+                        gold: {
+                            300: '#f3e5ab',
+                            400: '#e6ca65',
+                            500: '#d4af37',
+                            600: '#aa820a',
+                        },
+                        ink: '#111111'
+                    },
+                    fontFamily: {
+                        serif: ['Cormorant Garamond', 'Georgia', 'serif'],
+                        display: ['Playfair Display', 'serif'],
+                        sans: ['Alegreya Sans', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #140c08;
+            color: #ede3ce;
+            background-image: radial-gradient(#2a1b13 1px, transparent 1px), radial-gradient(#2a1b13 1px, #140c08 1px);
+            background-size: 40px 40px;
+            background-position: 0 0, 20px 20px;
+        }
+
+        .parchment-bg {
+            background-color: #f7f2e7;
+            color: #231710;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Cg fill-opacity='0.03'%3E%3Cpolygon points='0,0 100,0 50,100' fill='%3Cpath d='M0 0h100v100H0z'/%3E%3C/g%3E%3C/svg%3E");
+            box-shadow: inset 0 0 60px rgba(60, 42, 33, 0.3);
+        }
+
+        .dark-card {
+            background: linear-gradient(145deg, #231710, #1a100a);
+            border: 1px solid #d4af37;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        .gold-border {
+            border: 1px solid #d4af37;
+        }
+
+        .gold-glow {
+            text-shadow: 0 0 10px rgba(212, 175, 55, 0.4);
+        }
+
+        /* Dust motes effect */
+        #particles-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 10;
+            opacity: 0.6;
+        }
+
+        .gold-gradient-text {
+            background: linear-gradient(135deg, #f3e5ab 0%, #d4af37 50%, #aa820a 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #140c08;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #d4af37;
+            border-radius: 3px;
+        }
+    </style>
+</head>
+<body class="font-serif antialiased custom-scrollbar selection:bg-gold-500 selection:text-sepia-950">
+
+    <canvas id="particles-canvas"></canvas>
+
+    <header class="sticky top-0 z-50 bg-sepia-950/90 backdrop-blur-md border-b border-gold-500/30 transition-all duration-300" id="navbar">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            <a href="#" class="flex items-center gap-3 group">
+                <div class="w-10 h-10 rounded-full border border-gold-500 flex items-center justify-center bg-sepia-900 group-hover:bg-gold-500 transition-colors duration-300">
+                    <i class="fa-solid fa-compass-drafting text-gold-400 group-hover:text-sepia-950 text-lg transition-colors"></i>
+                </div>
+                <span class="font-display text-xl sm:text-2xl font-bold tracking-wider gold-gradient-text">J.L. BORGES</span>
+            </a>
+
+            <!-- Desktop Nav -->
+            <nav class="hidden md:flex items-center gap-6 text-sm tracking-widest uppercase font-sans text-parchment-200">
+                <a href="#biografia" class="hover:text-gold-400 transition-colors py-1 hover:border-b hover:border-gold-400">Biografía</a>
+                <a href="#obras" class="hover:text-gold-400 transition-colors py-1 hover:border-b hover:border-gold-400">Obras</a>
+                <a href="#intertextualidad" class="hover:text-gold-400 transition-colors py-1 hover:border-b hover:border-gold-400">Intertextualidad</a>
+                <a href="#impacto" class="hover:text-gold-400 transition-colors py-1 hover:border-b hover:border-gold-400">Legado</a>
+                <a href="#laberinto" class="hover:text-gold-400 transition-colors py-1 hover:border-b hover:border-gold-400 text-gold-400 font-semibold">El Aleph Interactive</a>
+            </nav>
+
+            <button id="mobile-menu-btn" class="md:hidden text-gold-400 p-2 focus:outline-none" aria-label="Abrir Menú">
+                <i class="fa-solid fa-bars text-2xl"></i>
+            </button>
+        </div>
+
+        <!-- Mobile Nav Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-sepia-900 border-b border-gold-500/30 px-6 py-4 flex flex-col gap-4 text-center font-sans tracking-widest uppercase">
+            <a href="#biografia" class="mobile-link text-parchment-200 hover:text-gold-400 py-2">Biografía</a>
+            <a href="#obras" class="mobile-link text-parchment-200 hover:text-gold-400 py-2">Obras</a>
+            <a href="#intertextualidad" class="mobile-link text-parchment-200 hover:text-gold-400 py-2">Intertextualidad</a>
+            <a href="#impacto" class="mobile-link text-parchment-200 hover:text-gold-400 py-2">Legado</a>
+            <a href="#laberinto" class="mobile-link text-gold-400 font-semibold py-2">El Aleph Interactive</a>
+        </div>
+    </header>
+
+    <section class="relative min-h-[90vh] flex items-center justify-center py-20 px-4 overflow-hidden">
+        <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-sepia-800/30 via-sepia-950/80 to-sepia-950"></div>
+        
+        <div class="relative z-20 max-w-5xl mx-auto text-center space-y-8">
+            <div class="inline-block border-y border-gold-500/50 py-2 px-6 mb-4">
+                <span class="font-sans text-xs sm:text-sm uppercase tracking-[0.3em] text-gold-400">1899 &mdash; 1986</span>
+            </div>
+            
+            <h1 class="font-display text-4xl sm:text-6xl md:text-7xl font-bold text-parchment-100 tracking-tight leading-tight">
+                Jorge Luis Borges
+            </h1>
+            
+            <p class="text-xl sm:text-2xl text-gold-300/90 font-serif italic max-w-2xl mx-auto">
+                "El Arquitecto de los Laberintos, los Espejos y la Memoria Infinita"
+            </p>
+
+            <!-- Dynamic Quote Book Container -->
+            <div class="mt-12 max-w-2xl mx-auto parchment-bg rounded-lg p-8 sm:p-10 relative border-2 border-gold-600/60 shadow-2xl transition-all duration-500 transform hover:scale-[1.01]">
+                <div class="absolute -top-4 left-1/2 -translate-x-1/2 bg-sepia-900 border border-gold-500 text-gold-400 px-4 py-1 text-xs tracking-widest uppercase rounded">
+                    Citas del Universo Borgeano
+                </div>
+                
+                <i class="fa-solid fa-quote-left text-3xl text-gold-600/40 absolute top-4 left-4"></i>
+                <i class="fa-solid fa-quote-right text-3xl text-gold-600/40 absolute bottom-4 right-4"></i>
+
+                <p id="hero-quote-text" class="text-lg sm:text-xl text-sepia-900 font-serif italic leading-relaxed min-h-[90px] flex items-center justify-center px-4">
+                    "Siempre imaginé que el Paraíso sería algún tipo de biblioteca."
+                </p>
+                <div id="hero-quote-source" class="text-xs uppercase tracking-widest text-sepia-800 font-sans font-bold mt-4">
+                    &mdash; Poemario / Ensayos
+                </div>
+
+                <button id="next-quote-btn" class="mt-6 px-6 py-2 bg-sepia-900 hover:bg-gold-600 text-gold-300 hover:text-sepia-950 font-sans text-xs tracking-widest uppercase rounded border border-gold-500 transition-all duration-300 flex items-center gap-2 mx-auto">
+                    <i class="fa-solid fa-book-open"></i> Siguiente Reflexión
+                </button>
+            </div>
+
+            <!-- Scroll indicator -->
+            <div class="pt-8">
+                <a href="#biografia" class="inline-flex flex-col items-center text-gold-400/70 hover:text-gold-400 transition-colors">
+                    <span class="text-xs font-sans uppercase tracking-widest mb-2">Explorar su Mundo</span>
+                    <i class="fa-solid fa-chevron-down animate-bounce"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <section id="biografia" class="py-24 px-4 max-w-6xl mx-auto border-t border-gold-500/20">
+        <div class="text-center space-y-4 mb-16">
+            <h2 class="font-display text-3xl sm:text-5xl font-bold gold-gradient-text">Cronología de una Vida Literaria</h2>
+            <p class="text-parchment-300 max-w-xl mx-auto font-sans text-sm tracking-wide uppercase">
+                Desde las orillas de Palermo hasta el infinito de Ginebra
+            </p>
+            <div class="w-24 h-0.5 bg-gold-500 mx-auto"></div>
+        </div>
+
+        <div class="relative border-l-2 border-gold-500/40 ml-4 sm:ml-32 space-y-12">
+            
+            <!-- Timeline Item 1 -->
+            <div class="relative pl-8 sm:pl-10 group">
+                <div class="absolute -left-[17px] top-1.5 w-8 h-8 rounded-full bg-sepia-900 border-2 border-gold-500 flex items-center justify-center group-hover:bg-gold-500 transition-colors">
+                    <i class="fa-solid fa-feather text-gold-400 group-hover:text-sepia-950 text-xs"></i>
+                </div>
+                <div class="hidden sm:block absolute -left-32 top-1.5 font-sans font-bold text-gold-400 text-sm w-24 text-right">
+                    1899 &mdash; 1914
+                </div>
+                <div class="dark-card p-6 rounded-lg">
+                    <span class="sm:hidden inline-block text-xs font-sans font-bold text-gold-400 mb-2">1899 &mdash; 1914</span>
+                    <h3 class="font-display text-2xl text-gold-300 font-bold mb-2">Infancia Porteña y la Biblioteca del Padre</h3>
+                    <p class="text-parchment-200 text-base leading-relaxed">
+                        Nace el 24 de agosto de 1899 en Buenos Aires. Crece en el barrio de Palermo, en una casa con una vasta biblioteca en inglés que marcaría su destino. Se crió en un entorno bilingüe y leyó a Cervantes y Shakespeare a edad muy temprana.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Timeline Item 2 -->
+            <div class="relative pl-8 sm:pl-10 group">
+                <div class="absolute -left-[17px] top-1.5 w-8 h-8 rounded-full bg-sepia-900 border-2 border-gold-500 flex items-center justify-center group-hover:bg-gold-500 transition-colors">
+                    <i class="fa-solid fa-graduation-cap text-gold-400 group-hover:text-sepia-950 text-xs"></i>
+                </div>
+                <div class="hidden sm:block absolute -left-32 top-1.5 font-sans font-bold text-gold-400 text-sm w-24 text-right">
+                    1914 &mdash; 1921
+                </div>
+                <div class="dark-card p-6 rounded-lg">
+                    <span class="sm:hidden inline-block text-xs font-sans font-bold text-gold-400 mb-2">1914 &mdash; 1921</span>
+                    <h3 class="font-display text-2xl text-gold-300 font-bold mb-2">Ginebra, la Primera Guerra y el Ultraísmo</h3>
+                    <p class="text-parchment-200 text-base leading-relaxed">
+                        Su familia se traslada a Europa. Estudia en el Collège de Genève. Descubre a los simbolistas franceses y a Schopenhauer. En España, participa activamente en el movimiento poético vanguardista conocido como **Ultraísmo**.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Timeline Item 3 -->
+            <div class="relative pl-8 sm:pl-10 group">
+                <div class="absolute -left-[17px] top-1.5 w-8 h-8 rounded-full bg-sepia-900 border-2 border-gold-500 flex items-center justify-center group-hover:bg-gold-500 transition-colors">
+                    <i class="fa-solid fa-city text-gold-400 group-hover:text-sepia-950 text-xs"></i>
+                </div>
+                <div class="hidden sm:block absolute -left-32 top-1.5 font-sans font-bold text-gold-400 text-sm w-24 text-right">
+                    1921 &mdash; 1938
+                </div>
+                <div class="dark-card p-6 rounded-lg">
+                    <span class="sm:hidden inline-block text-xs font-sans font-bold text-gold-400 mb-2">1921 &mdash; 1938</span>
+                    <h3 class="font-display text-2xl text-gold-300 font-bold mb-2">El Retorno a Buenos Aires y Mítica del Arrabal</h3>
+                    <p class="text-parchment-200 text-base leading-relaxed">
+                        De regreso en Argentina, mitifica los arrabales porteños en *Fervor de Buenos Aires* (1923). Funda revistas literarias (*Proa*, *Sur*) y trabaja como bibliotecario en la Biblioteca Municipal Miguel Cané, donde concibe sus cuentos más célebres.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Timeline Item 4 -->
+            <div class="relative pl-8 sm:pl-10 group">
+                <div class="absolute -left-[17px] top-1.5 w-8 h-8 rounded-full bg-sepia-900 border-2 border-gold-500 flex items-center justify-center group-hover:bg-gold-500 transition-colors">
+                    <i class="fa-solid fa-eye-slash text-gold-400 group-hover:text-sepia-950 text-xs"></i>
+                </div>
+                <div class="hidden sm:block absolute -left-32 top-1.5 font-sans font-bold text-gold-400 text-sm w-24 text-right">
+                    1946 &mdash; 1973
+                </div>
+                <div class="dark-card p-6 rounded-lg">
+                    <span class="sm:hidden inline-block text-xs font-sans font-bold text-gold-400 mb-2">1946 &mdash; 1973</span>
+                    <h3 class="font-display text-2xl text-gold-300 font-bold mb-2">Biblioteca Nacional, Ceguera y Fama Mundial</h3>
+                    <p class="text-parchment-200 text-base leading-relaxed">
+                        Tras diferencias políticas con el peronismo, es desplazado temporalmente. En 1955 es nombrado Director de la Biblioteca Nacional. Su ceguera progresiva se vuelve casi total. En 1961 comparte el Premio Formentor con Samuel Beckett, catapultando su fama internacional.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Timeline Item 5 -->
+            <div class="relative pl-8 sm:pl-10 group">
+                <div class="absolute -left-[17px] top-1.5 w-8 h-8 rounded-full bg-sepia-900 border-2 border-gold-500 flex items-center justify-center group-hover:bg-gold-500 transition-colors">
+                    <i class="fa-solid fa-infinity text-gold-400 group-hover:text-sepia-950 text-xs"></i>
+                </div>
+                <div class="hidden sm:block absolute -left-32 top-1.5 font-sans font-bold text-gold-400 text-sm w-24 text-right">
+                    1986
+                </div>
+                <div class="dark-card p-6 rounded-lg">
+                    <span class="sm:hidden inline-block text-xs font-sans font-bold text-gold-400 mb-2">1986</span>
+                    <h3 class="font-display text-2xl text-gold-300 font-bold mb-2">El Laberinto Final en Ginebra</h3>
+                    <p class="text-parchment-200 text-base leading-relaxed">
+                        Se radica en Ginebra con María Kodama, su compañera y heredera universal. Fallece el 14 de junio de 1986 a los 86 años. Sus restos descansan en el cementerio de Plainpalais bajo una lápida grabada con motivos nórdicos antiguos.
+                    </p>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <section id="obras" class="py-24 px-4 max-w-7xl mx-auto border-t border-gold-500/20">
+        <div class="text-center space-y-4 mb-16">
+            <h2 class="font-display text-3xl sm:text-5xl font-bold gold-gradient-text">Obras Fundamentales</h2>
+            <p class="text-parchment-300 max-w-xl mx-auto font-sans text-sm tracking-wide uppercase">
+                Seleccione un volumen para abrir sus pasajes y claves teóricas
+            </p>
+            <div class="w-24 h-0.5 bg-gold-500 mx-auto"></div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            
+            <!-- Book 1 -->
+            <div onclick="openBookModal('ficciones')" class="group cursor-pointer dark-card p-6 rounded-xl hover:-translate-y-2 transition-all duration-300 relative flex flex-col justify-between border-t-4 border-t-gold-500">
+                <div class="space-y-4">
+                    <div class="w-12 h-12 rounded-lg bg-gold-500/10 border border-gold-500/40 flex items-center justify-center text-gold-400 text-xl font-bold">
+                        I
+                    </div>
+                    <h3 class="font-display text-2xl font-bold text-parchment-100 group-hover:text-gold-300 transition-colors">Ficciones</h3>
+                    <p class="text-xs uppercase tracking-widest font-sans text-gold-500">Publicado en 1944</p>
+                    <p class="text-parchment-300 text-sm line-clamp-3">
+                        Obra maestra del relato fantástico filosófico. Contiene "El jardín de senderos que se bifurcan", "La biblioteca de Babel" y "Pierre Menard".
+                    </p>
+                </div>
+                <div class="mt-6 pt-4 border-t border-gold-500/20 flex items-center justify-between text-xs uppercase tracking-widest text-gold-400 font-sans">
+                    <span>Explorar Volumen</span>
+                    <i class="fa-solid fa-arrow-right group-hover:translate-x-1 transition-transform"></i>
+                </div>
+            </div>
+
+            <!-- Book 2 -->
+            <div onclick="openBookModal('aleph')" class="group cursor-pointer dark-card p-6 rounded-xl hover:-translate-y-2 transition-all duration-300 relative flex flex-col justify-between border-t-4 border-t-gold-500">
+                <div class="space-y-4">
+                    <div class="w-12 h-12 rounded-lg bg-gold-500/10 border border-gold-500/40 flex items-center justify-center text-gold-400 text-xl font-bold">
+                        II
+                    </div>
+                    <h3 class="font-display text-2xl font-bold text-parchment-100 group-hover:text-gold-300 transition-colors">El Aleph</h3>
+                    <p class="text-xs uppercase tracking-widest font-sans text-gold-500">Publicado en 1949</p>
+                    <p class="text-parchment-300 text-sm line-clamp-3">
+                        Cuentos sobre la inmortalidad, la identidad múltiple y el punto donde convergen todos los lugares del universo simultáneamente.
+                    </p>
+                </div>
+                <div class="mt-6 pt-4 border-t border-gold-500/20 flex items-center justify-between text-xs uppercase tracking-widest text-gold-400 font-sans">
+                    <span>Explorar Volumen</span>
+                    <i class="fa-solid fa-arrow-right group-hover:translate-x-1 transition-transform"></i>
+                </div>
+            </div>
+
+            <!-- Book 3 -->
+            <div onclick="openBookModal('hacedor')" class="group cursor-pointer dark-card p-6 rounded-xl hover:-translate-y-2 transition-all duration-300 relative flex flex-col justify-between border-t-4 border-t-gold-500">
+                <div class="space-y-4">
+                    <div class="w-12 h-12 rounded-lg bg-gold-500/10 border border-gold-500/40 flex items-center justify-center text-gold-400 text-xl font-bold">
+                        III
+                    </div>
+                    <h3 class="font-display text-2xl font-bold text-parchment-100 group-hover:text-gold-300 transition-colors">El Hacedor</h3>
+                    <p class="text-xs uppercase tracking-widest font-sans text-gold-500">Publicado en 1960</p>
+                    <p class="text-parchment-300 text-sm line-clamp-3">
+                        Miscelánea íntima de poemas, parábolas y prosas breves. Una de las obras más personales e intensas sobre su paulatina ceguera.
+                    </p>
+                </div>
+                <div class="mt-6 pt-4 border-t border-gold-500/20 flex items-center justify-between text-xs uppercase tracking-widest text-gold-400 font-sans">
+                    <span>Explorar Volumen</span>
+                    <i class="fa-solid fa-arrow-right group-hover:translate-x-1 transition-transform"></i>
+                </div>
+            </div>
+
+            <!-- Book 4 -->
+            <div onclick="openBookModal('inquisiciones')" class="group cursor-pointer dark-card p-6 rounded-xl hover:-translate-y-2 transition-all duration-300 relative flex flex-col justify-between border-t-4 border-t-gold-500">
+                <div class="space-y-4">
+                    <div class="w-12 h-12 rounded-lg bg-gold-500/10 border border-gold-500/40 flex items-center justify-center text-gold-400 text-xl font-bold">
+                        IV
+                    </div>
+                    <h3 class="font-display text-2xl font-bold text-parchment-100 group-hover:text-gold-300 transition-colors">Otras Inquisiciones</h3>
+                    <p class="text-xs uppercase tracking-widest font-sans text-gold-500">Publicado en 1952</p>
+                    <p class="text-parchment-300 text-sm line-clamp-3">
+                        Recopilación de ensayos magistrales sobre el tiempo, Keats, la muralla china, paradojas filosóficas y relecturas dantescas.
+                    </p>
+                </div>
+                <div class="mt-6 pt-4 border-t border-gold-500/20 flex items-center justify-between text-xs uppercase tracking-widest text-gold-400 font-sans">
+                    <span>Explorar Volumen</span>
+                    <i class="fa-solid fa-arrow-right group-hover:translate-x-1 transition-transform"></i>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <section id="intertextualidad" class="py-24 px-4 max-w-6xl mx-auto border-t border-gold-500/20">
+        <div class="text-center space-y-4 mb-16">
+            <h2 class="font-display text-3xl sm:text-5xl font-bold gold-gradient-text">Intertextualidad y Reescritura</h2>
+            <p class="text-parchment-300 max-w-2xl mx-auto font-sans text-sm tracking-wide uppercase">
+                "La literatura no es exhaustible por la sencilla razón de que un solo libro no lo es"
+            </p>
+            <div class="w-24 h-0.5 bg-gold-500 mx-auto"></div>
+        </div>
+
+        <!-- Interactive Intertextual Tabs -->
+        <div class="dark-card rounded-2xl p-6 sm:p-10 border border-gold-500/40">
+            <!-- Tab Headers -->
+            <div class="flex flex-wrap gap-2 border-b border-gold-500/30 pb-4 mb-8 font-sans text-xs sm:text-sm tracking-wider uppercase">
+                <button onclick="switchTab('fierro')" id="tab-fierro" class="tab-btn px-4 py-2 rounded-lg bg-gold-500 text-sepia-950 font-bold transition-all">
+                    El Martín Fierro
+                </button>
+                <button onclick="switchTab('mitologia')" id="tab-mitologia" class="tab-btn px-4 py-2 rounded-lg text-parchment-300 hover:text-gold-300 transition-all">
+                    El Minotauro
+                </button>
+                <button onclick="switchTab('dante')" id="tab-dante" class="tab-btn px-4 py-2 rounded-lg text-parchment-300 hover:text-gold-300 transition-all">
+                    Dante & Beatriz
+                </button>
+                <button onclick="switchTab('quijote')" id="tab-quijote" class="tab-btn px-4 py-2 rounded-lg text-parchment-300 hover:text-gold-300 transition-all">
+                    Pierre Menard & El Quijote
+                </button>
+            </div>
+
+            <!-- Tab Content 1: Martin Fierro -->
+            <div id="content-fierro" class="tab-content space-y-6">
+                <div class="flex items-center gap-3 text-gold-400">
+                    <i class="fa-solid fa-scroll text-2xl"></i>
+                    <h3 class="font-display text-2xl font-bold">Completar el Destino del Gaucho: "El Fin" y "Cruz"</h3>
+                </div>
+                <p class="text-parchment-200 text-lg leading-relaxed">
+                    Borges no consideraba la literatura como un texto estático, sino como un diálogo interminable. En **"El Fin"**, le otorga la verdadera conclusión al poema épico de José Hernández. En la pulpería, el hermano del moreno asesinado por Fierro aguarda para completar el duelo. Al matar a Fierro, el moreno se convierte a su vez en el asesino solitario, heredando la trágica condena de su enemigo.
+                </p>
+                <div class="parchment-bg p-6 rounded-lg text-sepia-900 border-l-4 border-gold-600 italic">
+                    "Cumplida su tarea de justiciero, ahora era nadie. Mejor dicho era el otro: no tenía destino sobre la tierra y había matado a un hombre."
+                    <span class="block text-right font-sans not-italic text-xs font-bold uppercase mt-2">&mdash; Cuento "El Fin"</span>
+                </div>
+                <p class="text-parchment-300 text-sm">
+                    Asimismo, en **"Biografía de Tadeo Isidoro Cruz"**, Borges reinterpreta la noche en que el sargento Cruz decide defender al prófugo Fierro: la revelación de la propia identidad en un instante decisivo.
+                </p>
+            </div>
+
+            <!-- Tab Content 2: Minotauro -->
+            <div id="content-mitologia" class="tab-content hidden space-y-6">
+                <div class="flex items-center gap-3 text-gold-400">
+                    <i class="fa-solid fa-bullseye text-2xl"></i>
+                    <h3 class="font-display text-2xl font-bold">La Inversión Mítica: "La Casa de Asterión"</h3>
+                </div>
+                <p class="text-parchment-200 text-lg leading-relaxed">
+                    En "La Casa de Asterión", Borges reescribe el mito del Minotauro reduciendo la perspectiva al monstruo encorvado y solitario. Asterión no habita una prisión cruel, sino su propia casa infinita de puertas abiertas. La muerte a manos de Teseo no es una tragedia heroica, sino una liberación redentora esperada con paciencia.
+                </p>
+                <div class="parchment-bg p-6 rounded-lg text-sepia-900 border-l-4 border-gold-600 italic">
+                    "¿Lo creerás, Ariadna? &mdash;dijo Teseo&mdash;. El minotauro apenas se defendió."
+                    <span class="block text-right font-sans not-italic text-xs font-bold uppercase mt-2">&mdash; "La Casa de Asterión"</span>
+                </div>
+                <p class="text-parchment-300 text-sm">
+                    Mediante este giro humanizador, Borges transforma un monstruo sanguinario en una alegoría de la soledad, el encierro existencial y el anhelo de trascendencia.
+                </p>
+            </div>
+
+            <!-- Tab Content 3: Dante -->
+            <div id="content-dante" class="tab-content hidden space-y-6">
+                <div class="flex items-center gap-3 text-gold-400">
+                    <i class="fa-solid fa-fire text-2xl"></i>
+                    <h3 class="font-display text-2xl font-bold">Nostalgia Dantesca: La Mirada Inalcanzable de Beatriz</h3>
+                </div>
+                <p class="text-parchment-200 text-lg leading-relaxed">
+                    Apasionado lector de la *Divina Comedia*, Borges dedicó extensos ensayos (*Nueve Ensayos Dantescos*) a analizar la figura de Beatriz Portinari. Argumenta que Dante escribió la comedia no solo para edificar una teología, sino para reencontrarse con su amada imposible.
+                </p>
+                <p class="text-parchment-200 text-lg leading-relaxed">
+                    Esta intertextualidad impregna cuentos como **"El Aleph"**, donde el narrador Borges contempla el universo infinito en el sótano de la calle Garay, guiado por la devoción perdida hacia Beatriz Viterbo.
+                </p>
+            </div>
+
+            <!-- Tab Content 4: Pierre Menard -->
+            <div id="content-quijote" class="tab-content hidden space-y-6">
+                <div class="flex items-center gap-3 text-gold-400">
+                    <i class="fa-solid fa-pen-nib text-2xl"></i>
+                    <h3 class="font-display text-2xl font-bold">Pierre Menard y la Teoría de la Lectura</h3>
+                </div>
+                <p class="text-parchment-200 text-lg leading-relaxed">
+                    En "Pierre Menard, autor del Quijote", Borges propone la premisa absurda y genial de un poeta francés del siglo XX que decide redactar, no copiar, el *Don Quijote de la Mancha* palabra por palabra. El texto de Menard es idéntico al de Cervantes, pero es infinitamente más rico y complejo por haber sido escrito en otra época.
+                </p>
+                <div class="parchment-bg p-6 rounded-lg text-sepia-900 border-l-4 border-gold-600 italic">
+                    "El texto de Cervantes y el de Menard son verbalmente idénticos, pero el segundo es casi infinitamente más rico."
+                </div>
+                <p class="text-parchment-300 text-sm">
+                    Borges inventa con esto la premisa de que la lectura reescribe el texto: la importancia de una obra depende del contexto y del lector que la aborda.
+                </p>
+            </div>
+
+        </div>
+    </section>
+
+    <section id="impacto" class="py-24 px-4 max-w-6xl mx-auto border-t border-gold-500/20">
+        <div class="text-center space-y-4 mb-16">
+            <h2 class="font-display text-3xl sm:text-5xl font-bold gold-gradient-text">Impacto en la Cultura Argentina y Mundial</h2>
+            <p class="text-parchment-300 max-w-xl mx-auto font-sans text-sm tracking-wide uppercase">
+                Del mito del arrabal a precursor conceptual de la era digital
+            </p>
+            <div class="w-24 h-0.5 bg-gold-500 mx-auto"></div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <!-- Impact Argentina -->
+            <div class="dark-card p-8 rounded-xl border border-gold-500/40 relative overflow-hidden">
+                <div class="absolute -right-6 -bottom-6 text-gold-500/10 text-9xl">
+                    <i class="fa-solid fa-guitar"></i>
+                </div>
+                <h3 class="font-display text-2xl text-gold-300 font-bold mb-4 flex items-center gap-3">
+                    <i class="fa-solid fa-landmark text-gold-500"></i>
+                    En la Argentina: El Criollismo Urbano
+                </h3>
+                <ul class="space-y-4 text-parchment-200 text-base">
+                    <li class="flex items-start gap-2">
+                        <i class="fa-solid fa-angle-right text-gold-400 mt-1"></i>
+                        <span><strong>Mítica del Arrabal:</strong> Redefinió la identidad porteña elevando el suburbio, la compadrada, el duelo de guapos y la orilla a la categoría de épica universal.</span>
+                    </li>
+                    <li class="flex items-start gap-2">
+                        <i class="fa-solid fa-angle-right text-gold-400 mt-1"></i>
+                        <span><strong>El Tango y las Milongas:</strong> Escribió letras de tangos y milongas, viendo en el tango no el melodrama nostálgico, sino el desafío lírico y el coraje desinteresado.</span>
+                    </li>
+                    <li class="flex items-start gap-2">
+                        <i class="fa-solid fa-angle-right text-gold-400 mt-1"></i>
+                        <span><strong>Renovación del Lenguaje:</strong> Despojó a la prosa hispana de adornos innecesarios, creando una sintaxis precisa, matemática e irónica.</span>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Impact Global -->
+            <div class="dark-card p-8 rounded-xl border border-gold-500/40 relative overflow-hidden">
+                <div class="absolute -right-6 -bottom-6 text-gold-500/10 text-9xl">
+                    <i class="fa-solid fa-globe"></i>
+                </div>
+                <h3 class="font-display text-2xl text-gold-300 font-bold mb-4 flex items-center gap-3">
+                    <i class="fa-solid fa-network-wired text-gold-500"></i>
+                    En el Mundo: Precursor del Hipertexto
+                </h3>
+                <ul class="space-y-4 text-parchment-200 text-base">
+                    <li class="flex items-start gap-2">
+                        <i class="fa-solid fa-angle-right text-gold-400 mt-1"></i>
+                        <span><strong>Precursor de Internet:</strong> "El jardín de senderos que se bifurcan" y "La biblioteca de Babel" anticiparon la estructura ramificada del hipertexto y de la Web moderna.</span>
+                    </li>
+                    <li class="flex items-start gap-2">
+                        <i class="fa-solid fa-angle-right text-gold-400 mt-1"></i>
+                        <span><strong>Influencia Filosófica:</strong> Pensadores como Michel Foucault y filósofos posmodernos basaron reflexiones en las taxonomías fantásticas de Borges.</span>
+                    </li>
+                    <li class="flex items-start gap-2">
+                        <i class="fa-solid fa-angle-right text-gold-400 mt-1"></i>
+                        <span><strong>Huella Literaria:</strong> Umberto Eco rinde homenaje directo en *El nombre de la rosa* con el bibliotecario ciego "Jorge de Burgos".</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <section id="laberinto" class="py-24 px-4 max-w-5xl mx-auto border-t border-gold-500/20">
+        <div class="text-center space-y-4 mb-12">
+            <h2 class="font-display text-3xl sm:text-5xl font-bold gold-gradient-text">El Aleph: Sintetizador de Símbolos</h2>
+            <p class="text-parchment-300 max-w-xl mx-auto font-sans text-sm tracking-wide uppercase">
+                Haga clic en los símbolos borgeanos para contemplar sus conexiones con el universo
+            </p>
+            <div class="w-24 h-0.5 bg-gold-500 mx-auto"></div>
+        </div>
+
+        <div class="dark-card p-6 sm:p-10 rounded-2xl border-2 border-gold-500/50 shadow-2xl">
+            <!-- Symbol Selection Grid -->
+            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-4 mb-8">
+                
+                <button onclick="selectSymbol('espejo')" id="sym-espejo" class="symbol-btn border border-gold-500/30 hover:border-gold-400 p-4 rounded-xl flex flex-col items-center gap-2 bg-sepia-900/60 transition-all hover:bg-gold-500/20 active-symbol">
+                    <i class="fa-solid fa-dungeon text-2xl text-gold-400"></i>
+                    <span class="font-sans text-xs uppercase tracking-wider text-parchment-200">El Espejo</span>
+                </button>
+
+                <button onclick="selectSymbol('laberinto')" id="sym-laberinto" class="symbol-btn border border-gold-500/30 hover:border-gold-400 p-4 rounded-xl flex flex-col items-center gap-2 bg-sepia-900/60 transition-all hover:bg-gold-500/20">
+                    <i class="fa-solid fa-arrows-split-up-and-left text-2xl text-gold-400"></i>
+                    <span class="font-sans text-xs uppercase tracking-wider text-parchment-200">Laberinto</span>
+                </button>
+
+                <button onclick="selectSymbol('aleph')" id="sym-aleph" class="symbol-btn border border-gold-500/30 hover:border-gold-400 p-4 rounded-xl flex flex-col items-center gap-2 bg-sepia-900/60 transition-all hover:bg-gold-500/20">
+                    <i class="fa-solid fa-atom text-2xl text-gold-400"></i>
+                    <span class="font-sans text-xs uppercase tracking-wider text-parchment-200">El Aleph</span>
+                </button>
+
+                <button onclick="selectSymbol('tigre')" id="sym-tigre" class="symbol-btn border border-gold-500/30 hover:border-gold-400 p-4 rounded-xl flex flex-col items-center gap-2 bg-sepia-900/60 transition-all hover:bg-gold-500/20">
+                    <i class="fa-solid fa-paw text-2xl text-gold-400"></i>
+                    <span class="font-sans text-xs uppercase tracking-wider text-parchment-200">El Tigre</span>
+                </button>
+
+                <button onclick="selectSymbol('biblioteca')" id="sym-biblioteca" class="symbol-btn border border-gold-500/30 hover:border-gold-400 p-4 rounded-xl flex flex-col items-center gap-2 bg-sepia-900/60 transition-all hover:bg-gold-500/20">
+                    <i class="fa-solid fa-book-bookmark text-2xl text-gold-400"></i>
+                    <span class="font-sans text-xs uppercase tracking-wider text-parchment-200">Biblioteca</span>
+                </button>
+
+                <button onclick="selectSymbol('punal')" id="sym-punal" class="symbol-btn border border-gold-500/30 hover:border-gold-400 p-4 rounded-xl flex flex-col items-center gap-2 bg-sepia-900/60 transition-all hover:bg-gold-500/20">
+                    <i class="fa-solid fa-shield-halved text-2xl text-gold-400"></i>
+                    <span class="font-sans text-xs uppercase tracking-wider text-parchment-200">El Puñal</span>
+                </button>
+
+            </div>
+
+            <!-- Dynamic Display Panel -->
+            <div class="parchment-bg p-6 sm:p-8 rounded-xl border border-gold-600 text-sepia-950 transition-all duration-300">
+                <div class="flex items-center gap-3 mb-4">
+                    <span id="symbol-display-icon" class="text-3xl text-gold-600">
+                        <i class="fa-solid fa-dungeon"></i>
+                    </span>
+                    <h3 id="symbol-display-title" class="font-display text-2xl font-bold">El Espejo y la Duplicación</h3>
+                </div>
+                <p id="symbol-display-text" class="text-lg leading-relaxed mb-4">
+                    Para Borges, los espejos causan pavor porque multiplican el número de los hombres. Simbolizan la identidad ilusoria, el doble (Doppelgänger) y la sospecha de que nosotros mismos podríamos ser el sueño de alguien más.
+                </p>
+                <div id="symbol-display-quote" class="italic text-sm text-sepia-800 border-l-2 border-gold-600 pl-4">
+                    "Los espejos y la copulación son abominables, porque multiplican el número de los hombres."
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div id="book-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden items-center justify-center p-4">
+        <div class="dark-card max-w-2xl w-full rounded-2xl border-2 border-gold-500 p-6 sm:p-8 relative max-h-[90vh] overflow-y-auto custom-scrollbar">
+            <button onclick="closeBookModal()" class="absolute top-4 right-4 text-parchment-300 hover:text-gold-400 text-xl p-2">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            <div id="modal-content" class="space-y-4">
+                <!-- Content injected via JS -->
+            </div>
+        </div>
+    </div>
+
+    <footer class="border-t border-gold-500/20 bg-sepia-950 py-12 px-4 text-center text-sm text-parchment-400">
+        <div class="max-w-4xl mx-auto space-y-4">
+            <p class="font-display text-xl text-gold-400">"El tiempo es un río que me arrebata, pero yo soy el río."</p>
+            <p class="font-sans text-xs tracking-widest uppercase">Homenaje Digital a Jorge Luis Borges &mdash; Literatura Universal</p>
+        </div>
+    </footer>
+
+    <script>
+        /* Floating Dust Particles */
+        const canvas = document.getElementById('particles-canvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 2 + 0.5;
+                this.speedX = (Math.random() - 0.5) * 0.3;
+                this.speedY = (Math.random() - 0.5) * 0.3;
+                this.opacity = Math.random() * 0.5 + 0.2;
+            }
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+                if (this.x < 0 || this.x > canvas.width) this.speedX *= -1;
+                if (this.y < 0 || this.y > canvas.height) this.speedY *= -1;
+            }
+            draw() {
+                ctx.fillStyle = `rgba(212, 175, 55, ${this.opacity})`;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        for (let i = 0; i < 50; i++) {
+            particles.push(new Particle());
+        }
+
+        function animateParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach(p => {
+                p.update();
+                p.draw();
+            });
+            requestAnimationFrame(animateParticles);
+        }
+        animateParticles();
+
+        /* Mobile Menu Toggle */
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+        document.querySelectorAll('.mobile-link').forEach(link => {
+            link.addEventListener('click', () => mobileMenu.classList.add('hidden'));
+        });
+
+        /* Hero Quote Generator */
+        const borgesQuotes = [
+            {
+                quote: "Siempre imaginé que el Paraíso sería algún tipo de biblioteca.",
+                source: "Poema de los Dones"
+            },
+            {
+                quote: "Uno no es por lo que escribe, sino por lo que ha leído.",
+                source: "Ensayos Conversaciones"
+            },
+            {
+                quote: "El tiempo es la sustancia de que estoy hecho. El tiempo es un río que me arrebata, pero yo soy el río.",
+                source: "Nueva Refutación del Tiempo"
+            },
+            {
+                quote: "Hay quienes no pueden imaginar un mundo sin pájaros; hay quienes no pueden imaginar un mundo sin agua; en lo que a mí se refiere, soy incapaz de imaginar un mundo sin libros.",
+                source: "Borges para Millones"
+            },
+            {
+                quote: "Que otros se jacten de las páginas que han escrito; a mí me enorgullecen las que he leído.",
+                source: "Fervor de Buenos Aires"
+            }
+        ];
+
+        let currentQuoteIdx = 0;
+        const quoteText = document.getElementById('hero-quote-text');
+        const quoteSource = document.getElementById('hero-quote-source');
+        const nextQuoteBtn = document.getElementById('next-quote-btn');
+
+        nextQuoteBtn.addEventListener('click', () => {
+            currentQuoteIdx = (currentQuoteIdx + 1) % borgesQuotes.length;
+            quoteText.style.opacity = 0;
+            setTimeout(() => {
+                quoteText.innerText = `"${borgesQuotes[currentQuoteIdx].quote}"`;
+                quoteSource.innerText = `— ${borgesQuotes[currentQuoteIdx].source}`;
+                quoteText.style.opacity = 1;
+            }, 250);
+        });
+
+        /* Intertextuality Tabs Logic */
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('bg-gold-500', 'text-sepia-950', 'font-bold');
+                btn.classList.add('text-parchment-300');
+            });
+
+            document.getElementById(`content-${tabId}`).classList.remove('hidden');
+            const activeBtn = document.getElementById(`tab-${tabId}`);
+            activeBtn.classList.add('bg-gold-500', 'text-sepia-950', 'font-bold');
+            activeBtn.classList.remove('text-parchment-300');
+        }
+
+        /* Symbol Synthesizer Logic */
+        const symbolsData = {
+            espejo: {
+                title: "El Espejo y la Duplicación",
+                icon: '<i class="fa-solid fa-dungeon"></i>',
+                text: "Para Borges, los espejos provocan inquietud porque multiplican la realidad y el número de los hombres. Representan la identidad ilusoria, el doble irreconciliable y la sospecha ontológica de ser soñados por un ente superior.",
+                quote: '"Los espejos y la copulación son abominables, porque multiplican el número de los hombres." — Tlön, Uqbar, Orbis Tertius'
+            },
+            laberinto: {
+                title: "El Laberinto e Infinito",
+                icon: '<i class="fa-solid fa-arrows-split-up-and-left"></i>',
+                text: "El laberinto es el símbolo borgeano por excelencia. Puede ser una ciudad como Babilonia, una casa infinita, una sola línea recta o un desierto sin fronteras. Representa la perplejidad cósmica del ser humano frente al universo.",
+                quote: '"Un libro es un laberinto de símbolos. Una biblioteca es un laberinto de tiempo." — El Jardín de Senderos'
+            },
+            aleph: {
+                title: "El Aleph y la Totalidad",
+                icon: '<i class="fa-solid fa-atom"></i>',
+                text: "El Aleph es un punto diminuto en el espacio que contiene todos los puntos del universo simultáneamente sin superponerse. Es la metáfora perfecta de la omnisciencia, lo inefable y la imposibilidad del lenguaje para narrarlo todo.",
+                quote: '"Vi el mar prístino, vi el alba y la tarde, vi las muchedumbres de América..." — El Aleph'
+            },
+            tigre: {
+                title: "El Tigre y la Belleza Feroz",
+                icon: '<i class="fa-solid fa-paw"></i>',
+                text: "Fascinación infantil que perduró toda su vida. El tigre simboliza la belleza pura, la fuerza natural ajena al tiempo y el misterio inalcanzable de la creación que ni la ceguera pudo borrar de sus recuerdos.",
+                quote: '"El tigre de la noche, las rayas del tigre sobre el oro del lomo." — El Hacedor'
+            },
+            biblioteca: {
+                title: "La Biblioteca de Babel",
+                icon: '<i class="fa-solid fa-book-bookmark"></i>',
+                text: "Un universo compuesto por galerías hexagonales infinitas que contienen todos los libros posibles combinando 25 símbolos ortográficos. Alberga toda la verdad, todas las mentiras y todas las combinaciones literarias pasadas y futuras.",
+                quote: '"El universo (que otros llaman la Biblioteca) se compone de un número indefinido, y tal vez infinito, de galerías hexagonales." — La Biblioteca de Babel'
+            },
+            punal: {
+                title: "El Puñal y el Honor Criollo",
+                icon: '<i class="fa-solid fa-shield-halved"></i>',
+                text: "Símbolo de la valentía primordial del guapo y del compadrito de las orillas porteñas. En el acero del puñal vive una voluntad dormida, una memoria de duelos y coraje heroico anterior a la moral moderna.",
+                quote: '"El acero que fue filo es ahora un recuerdo quietísimo." — El Puñal'
+            }
+        };
+
+        function selectSymbol(symKey) {
+            const data = symbolsData[symKey];
+            document.getElementById('symbol-display-title').innerText = data.title;
+            document.getElementById('symbol-display-icon').innerHTML = data.icon;
+            document.getElementById('symbol-display-text').innerText = data.text;
+            document.getElementById('symbol-display-quote').innerText = data.quote;
+
+            document.querySelectorAll('.symbol-btn').forEach(btn => btn.classList.remove('border-gold-400', 'bg-gold-500/20'));
+            document.getElementById(`sym-${symKey}`).classList.add('border-gold-400', 'bg-gold-500/20');
+        }
+
+        /* Book Modal Data & Handlers */
+        const booksData = {
+            ficciones: {
+                title: "Ficciones (1944)",
+                sub: "Cuentos fundamentales del laberinto borgeano",
+                content: `
+                    <p class="text-parchment-200 text-base leading-relaxed">
+                        Dividido en dos partes (<em>El jardín de senderos que se bifurcan</em> y <em>Artificios</em>), es considerado una de las obras más influyentes de la literatura del siglo XX.
+                    </p>
+                    <h4 class="font-display text-xl text-gold-300 font-bold mt-4">Cuentos Clave:</h4>
+                    <ul class="list-disc list-inside text-parchment-300 space-y-2 text-sm">
+                        <li><strong>Tlön, Uqbar, Orbis Tertius:</strong> La invención de un mundo imaginario que termina invadiendo la realidad tangible.</li>
+                        <li><strong>Pierre Menard, autor del Quijote:</strong> Redefinición teórica de la reescritura y el acto de leer.</li>
+                        <li><strong>La biblioteca de Babel:</strong> El universo concebido como una biblioteca hexagonal de infinitos libros.</li>
+                    </ul>
+                `
+            },
+            aleph: {
+                title: "El Aleph (1949)",
+                sub: "Inmortalidad, mística y visión cósmica",
+                content: `
+                    <p class="text-parchment-200 text-base leading-relaxed">
+                        Recopilación donde Borges profundiza en la metafísica, los laberintos temporales y el infinito. Contiene la conmovedora elegía a Beatriz Viterbo en su relato homónimo.
+                    </p>
+                    <h4 class="font-display text-xl text-gold-300 font-bold mt-4">Cuentos Clave:</h4>
+                    <ul class="list-disc list-inside text-parchment-300 space-y-2 text-sm">
+                        <li><strong>El Aleph:</strong> El punto mítico en la calle Garay desde donde se aprecia todo el cosmos.</li>
+                        <li><strong>La casa de Asterión:</strong> Reescritura del Minotauro desde la intimidad y soledad de la bestia.</li>
+                        <li><strong>El Inmortal:</strong> Reflexión sobre la pesada condena del tiempo sin fin y el olvido de la identidad.</li>
+                    </ul>
+                `
+            },
+            hacedor: {
+                title: "El Hacedor (1960)",
+                sub: "Prosa poética, cegueras y recuerdos",
+                content: `
+                    <p class="text-parchment-200 text-base leading-relaxed">
+                        Compilado heterogéneo de relatos muy breves, poemas y parábolas escrito cuando la ceguera de Borges ya era irreversible. Es un diario poético de su alma y sus lecturas.
+                    </p>
+                    <h4 class="font-display text-xl text-gold-300 font-bold mt-4">Puntos Destacados:</h4>
+                    <p class="text-parchment-300 text-sm italic">
+                        "Un hombre se propone la tarea de dibujar el mundo... Al cabo de los años descubre que ese paciente laberinto de líneas traza la imagen de su propia cara."
+                    </p>
+                `
+            },
+            inquisiciones: {
+                title: "Otras Inquisiciones (1952)",
+                sub: "La cumbre de sus ensayos filosóficos y literarios",
+                content: `
+                    <p class="text-parchment-200 text-base leading-relaxed">
+                        Ensayos donde aborda paradojas de Zenón, la muralla china, la poesía anglosajona, la metafísica del tiempo y análisis minuciosos sobre la obra de Dante Alighieri.
+                    </p>
+                    <h4 class="font-display text-xl text-gold-300 font-bold mt-4">Temas Centrales:</h4>
+                    <p class="text-parchment-300 text-sm">
+                        Cuestiona la validez de las clasificaciones estrictas y afirma que la historia de la literatura es la historia de las diversas entonaciones de unas cuantas metáforas.
+                    </p>
+                `
+            }
+        };
+
+        function openBookModal(bookKey) {
+            const modal = document.getElementById('book-modal');
+            const content = document.getElementById('modal-content');
+            const data = booksData[bookKey];
+
+            content.innerHTML = `
+                <div class="border-b border-gold-500/30 pb-4">
+                    <h3 class="font-display text-3xl font-bold text-gold-300">${data.title}</h3>
+                    <p class="text-xs font-sans uppercase tracking-widest text-gold-500 mt-1">${data.sub}</p>
+                </div>
+                <div class="pt-2">${data.content}</div>
+            `;
+
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function closeBookModal() {
+            const modal = document.getElementById('book-modal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+    </script>
+</body>
+</html>
